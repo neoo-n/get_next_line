@@ -6,7 +6,7 @@
 /*   By: dvauthey <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 10:40:48 by dvauthey          #+#    #+#             */
-/*   Updated: 2024/10/17 17:13:07 by dvauthey         ###   ########.fr       */
+/*   Updated: 2024/10/18 11:55:32 by dvauthey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	ft_strlen(char *s)
 	return (i);
 }
 
-int	ft_strlen_toprint(char *s)
+int	ft_strlen_to_n(char *s)
 {
 	int i;
 
