@@ -6,20 +6,33 @@
 /*   By: dvauthey <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 10:40:09 by dvauthey          #+#    #+#             */
-/*   Updated: 2024/10/20 14:46:37 by dvauthey         ###   ########.fr       */
+/*   Updated: 2024/10/20 17:32:19 by dvauthey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-/*char	*stash_in_line(char *stash, char *line)
+char	*stash_in_line(char *stash, char *line)
 {
 	int	i;
+	int	len_stash;
 
 	i = 0;
-	if (stash)
+	len_stash = ft_strlen(stash);
+	if (!stash)
+		return (NULL);
+	while (stash[i])
 	{
-*/
+		if (stash[i] == '\n')
+		{
+			line = ft_strjoin(line, stash, 0, i);
+			return (line);
+		}
+		i++;
+	}
+	line = ft_strjoin(line, stash, 0, len_stash);
+	return (line);
+}
 
 char	*newline_cpy(char *buff, char *line)
 {
@@ -46,25 +59,21 @@ char	*rest_in_stash(char *buff, char *stash)
 
 char	*get_next_line(int fd)
 {
-	static char	*stash;
-	char		*line;
-	char		buff[BUFFER_SIZE + 1];
+	t_string	s_read;
 	int			isread;
 
-	line = NULL;
+	s_read->line = NULL;
+	if (s_read->stash)
+		s_read->line = stash_in_line(s_read->stash, s_read->line);
 	isread = BUFFER_SIZE;
-	if (stash)
-		line = ft_strjoin(line, stash, 0, ft_strlen(stash));
 	while (isread == BUFFER_SIZE)
 	{
-		isread = read(fd, buff, BUFFER_SIZE);
+		isread = read(fd, s_read->buff, BUFFER_SIZE);
 		if (!isread)
 			return (NULL);
-		buff[isread] = '\0';
-		line = newline_cpy(buff, line);
-		stash = rest_in_stash(buff, stash);
-		if (stash)
-			return (line);
+		s_read->buff[isread] = '\0';
+		s_read->line = newline_cpy(s_read->buff, s_read->line);
+		printf("line : %s\n", s_read->line);
 	}
-	return (line);
+	return (s_read->line);
 }
