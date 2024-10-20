@@ -6,7 +6,7 @@
 /*   By: dvauthey <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 10:40:09 by dvauthey          #+#    #+#             */
-/*   Updated: 2024/10/18 16:41:45 by dvauthey         ###   ########.fr       */
+/*   Updated: 2024/10/20 14:46:37 by dvauthey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ char	*get_next_line(int fd)
 		if (!isread)
 			return (NULL);
 		buff[isread] = '\0';
-		printf("buff : %s\n", buff);
 		line = newline_cpy(buff, line);
 		stash = rest_in_stash(buff, stash);
 		if (stash)

@@ -6,7 +6,7 @@
 /*   By: dvauthey <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 10:40:48 by dvauthey          #+#    #+#             */
-/*   Updated: 2024/10/18 16:41:48 by dvauthey         ###   ########.fr       */
+/*   Updated: 2024/10/20 14:46:39 by dvauthey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	ft_strlen(char *s)
 	int	i;
 
 	i = 0;
+	if (!s)
+		return (0);
 	while (s[i])
 		i++;
 	return (i);
@@ -44,19 +46,16 @@ char	*ft_strjoin(char *s1, char *s2, int start, int end)
 	int		i;
 	int		j;
 
-	i = ft_strlen_to_n(s1);
+	i = ft_strlen(s1);
 	j = 0;
 	result = malloc(sizeof(char) * (i + end - start));
 	if (!result)
 		return (NULL);
 	i = 0;
-	if (s1)
+	while (i < ft_strlen(s1)) 
 	{
-		while (s1[i])
-		{
-			result[i] = s1[i];
-			i++;
-		}
+		result[i] = s1[i];
+		i++;
 	}
 	while (j < end - start)
 	{
