@@ -6,7 +6,7 @@
 /*   By: dvauthey <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 10:38:56 by dvauthey          #+#    #+#             */
-/*   Updated: 2024/10/21 13:35:58 by dvauthey         ###   ########.fr       */
+/*   Updated: 2024/10/21 16:47:24 by dvauthey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@
 #  define BUFFER_SIZE 42
 # endif
 
-char    *stash_in_line(char *stash, char *line);
-char    *newline_cpy(char *line, char *buff);
+char    *stash_in_line(char *stash, char *line, int *is_not_n);
+char    *newline_cpy(char *line, char *buff, int *is_not_n);
 char    *rest_in_stash(char *buff, char *stash);
 char    *get_next_line(int fd);
 int		ft_strlen(char *s);

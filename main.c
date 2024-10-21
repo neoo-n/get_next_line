@@ -6,7 +6,7 @@
 /*   By: dvauthey <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 13:06:17 by dvauthey          #+#    #+#             */
-/*   Updated: 2024/10/21 13:26:39 by dvauthey         ###   ########.fr       */
+/*   Updated: 2024/10/21 17:02:00 by dvauthey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,10 @@
 int	main(void)
 {
 	int fd = open("text.txt", O_RDONLY);
-	printf("first line : %s\n", get_next_line(fd));
-	printf("second line : %s\n", get_next_line(fd));
-	printf("third line : %s\n", get_next_line(fd));
+	for(int i = 0; i < 9; i++)
+	{
+		printf("\033[0;37mline %i : %s\n", i, get_next_line(fd));
+		printf("\033[0;34m----------------------------------------------------------------------------------\n");
+	}
 	return (0);
 }
