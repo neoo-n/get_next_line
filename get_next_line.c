@@ -6,7 +6,7 @@
 /*   By: dvauthey <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 10:40:09 by dvauthey          #+#    #+#             */
-/*   Updated: 2024/10/20 17:32:19 by dvauthey         ###   ########.fr       */
+/*   Updated: 2024/10/21 13:57:27 by dvauthey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,14 @@ char	*stash_in_line(char *stash, char *line)
 	return (line);
 }
 
-char	*newline_cpy(char *buff, char *line)
+char	*newline_cpy(char *line, char *buff)
 {
-	int	length_n;
-	
-	length_n = ft_strlen_to_n(buff);
-	line = ft_strjoin(line, buff, 0, length_n);
+	int	len_n;
+	int	len_tot;
+
+	len_n = ft_strlen_to_n(buff);
+	len_tot = ft_strlen(buff);
+	line = ft_strjoin(line, buff, 0, len_n);
 	return (line);
 }	
 
@@ -59,21 +61,29 @@ char	*rest_in_stash(char *buff, char *stash)
 
 char	*get_next_line(int fd)
 {
-	t_string	s_read;
+	char		*line;
+	static char	*stash;
+	char		buff[BUFFER_SIZE + 1];
 	int			isread;
 
-	s_read->line = NULL;
-	if (s_read->stash)
-		s_read->line = stash_in_line(s_read->stash, s_read->line);
+
+	line = NULL;
+	if (stash)
+		line = stash_in_line(stash, line);
 	isread = BUFFER_SIZE;
 	while (isread == BUFFER_SIZE)
 	{
-		isread = read(fd, s_read->buff, BUFFER_SIZE);
-		if (!isread)
+		if (line && line[ft_strlen_to_n(line) - 1] == '\n')
+			return (line);
+		isread = read(fd, buff, BUFFER_SIZE);
+		if (isread < 1)
 			return (NULL);
-		s_read->buff[isread] = '\0';
-		s_read->line = newline_cpy(s_read->buff, s_read->line);
-		printf("line : %s\n", s_read->line);
+		buff[isread] = '\0';
+		printf("buff : %s\n", buff);
+		line = newline_cpy(line, buff);
+		printf("line : %s\n", line);
+		stash = rest_in_stash(buff, stash);
+		printf("stash : %s\n", stash);
 	}
-	return (s_read->line);
+	return (line);
 }
