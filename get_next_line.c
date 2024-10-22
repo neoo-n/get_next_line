@@ -6,7 +6,7 @@
 /*   By: dvauthey <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 10:40:09 by dvauthey          #+#    #+#             */
-/*   Updated: 2024/10/22 11:26:49 by dvauthey         ###   ########.fr       */
+/*   Updated: 2024/10/22 12:08:05 by dvauthey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,22 +27,29 @@ char	*stash_in_line(char *stash, char *line, int *is_not_n)
 	{
 		if (stash[i] == '\n')
 		{
-			line = ft_strjoin(line, stash, 0, i);
+			line = ft_strjoin(line, stash, line, 0, i);
 			*is_not_n = 0;
 			return (line);
 		}
 		i++;
 	}
-	line = ft_strjoin(line, stash, 0, len_stash_tot);
+	line = ft_strjoin(line, stash, line, 0, len_stash_tot);
 	return (line);
 }
 
-/*char	*del_stash(char *stash, int is_not_n)
+char	*del_stash(char *stash)
 {
-	
+	int	len_n;
+	int len_tot;
 
+	len_n = ft_strlen_to_n(stash);
+	len_tot = ft_strlen(stash);
+	if (len_n != len_tot)
+		stash = ft_strjoin(NULL, stash, len_n, len_tot);
+	else
+		stash = NULL;
 	return (stash);
-}*/
+}
 
 char	*newline_cpy(char *line, char *buff, int *is_not_n)
 {
@@ -51,13 +58,13 @@ char	*newline_cpy(char *line, char *buff, int *is_not_n)
 
 	len_n = ft_strlen_to_n(buff);
 	len_tot = ft_strlen(buff);
-	line = ft_strjoin(line, buff, 0, len_n);
+	line = ft_strjoin(line, buff, line, 0, len_n);
 	if (line[ft_strlen_to_n(line) - 1] == '\n')
 		*is_not_n = 0;
 	return (line);
 }	
 
-char	*rest_in_stash(char *buff, char *stash)
+char	*rest_in_stash(char *buff, char *stash, char *line)
 {
 	int	length_tot;
 	int	length_n;
@@ -65,7 +72,7 @@ char	*rest_in_stash(char *buff, char *stash)
 	length_tot = ft_strlen(buff);
 	length_n = ft_strlen_to_n(buff);
 	if (length_n != length_tot)
-		stash = ft_strjoin(stash, buff, length_n, length_tot);
+		stash = ft_strjoin(stash, buff, line, length_n, length_tot);
 	else
 		return (NULL);
 	return (stash);
@@ -85,18 +92,8 @@ char	*get_next_line(int fd)
 	if (stash)
 		line = stash_in_line(stash, line, &is_not_n);
 	printf("\033[0;32mline sans buff : %s\n", line);
+	stash = del_stash(stash);
 	isread = BUFFER_SIZE;
-	if (!is_not_n)
-	{
-		printf("\033[0;32mline milieu : %s\n", line);
-		stash = rest_in_stash(stash, NULL);
-		printf("\033[0;32mline encore : %s\n", line);
-	}
-	else if (line)
-	{
-		stash = NULL;
-	}
-	printf("\033[0;32mline presque final : %s\n", line);
 	while (isread == BUFFER_SIZE && is_not_n)
 	{
 		isread = read(fd, buff, BUFFER_SIZE);
@@ -106,9 +103,8 @@ char	*get_next_line(int fd)
 		printf("\033[0;31mbuff : %s\n", buff);
 		line = newline_cpy(line, buff, &is_not_n);
 		printf("\033[0;32mline : %s\n", line);
-		stash = rest_in_stash(buff, stash);
+		stash = rest_in_stash(buff, stash, NULL);
 		printf("\033[0;35mstash : %s\n", stash);
 	}
-	printf("\033[0;32mline final : %s\n", line);
 	return (line);
 }

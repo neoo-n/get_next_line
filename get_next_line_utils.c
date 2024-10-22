@@ -6,7 +6,7 @@
 /*   By: dvauthey <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 10:40:48 by dvauthey          #+#    #+#             */
-/*   Updated: 2024/10/21 18:00:56 by dvauthey         ###   ########.fr       */
+/*   Updated: 2024/10/22 12:08:08 by dvauthey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	ft_strlen_to_n(char *s)
 	return (i);
 }
 
-char	*ft_strjoin(char *s1, char *s2, int start, int end)
+char	*ft_strjoin(char *s1, char *s2, char *line, int start, int end)
 {
 	char	*result;
 	int		i;
@@ -61,6 +61,7 @@ char	*ft_strjoin(char *s1, char *s2, int start, int end)
 	while (j < end - start)
 	{
 		result[i + j] = s2[start + j];
+		printf("\033[0;32mliiiiiiiiiine : %s\n", line);
 		j++;
 	}
 	return (result);
