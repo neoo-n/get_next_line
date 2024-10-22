@@ -6,7 +6,7 @@
 /*   By: dvauthey <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 10:40:09 by dvauthey          #+#    #+#             */
-/*   Updated: 2024/10/21 18:00:54 by dvauthey         ###   ########.fr       */
+/*   Updated: 2024/10/22 11:26:49 by dvauthey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,13 @@ char	*stash_in_line(char *stash, char *line, int *is_not_n)
 	return (line);
 }
 
-char	*del_stash(char *stash, int is_not_n)
+/*char	*del_stash(char *stash, int is_not_n)
 {
 	
 
 	return (stash);
-}
+}*/
+
 char	*newline_cpy(char *line, char *buff, int *is_not_n)
 {
 	int	len_n;
@@ -83,19 +84,31 @@ char	*get_next_line(int fd)
 	is_not_n = 1;
 	if (stash)
 		line = stash_in_line(stash, line, &is_not_n);
+	printf("\033[0;32mline sans buff : %s\n", line);
 	isread = BUFFER_SIZE;
 	if (!is_not_n)
+	{
+		printf("\033[0;32mline milieu : %s\n", line);
 		stash = rest_in_stash(stash, NULL);
+		printf("\033[0;32mline encore : %s\n", line);
+	}
 	else if (line)
+	{
 		stash = NULL;
+	}
+	printf("\033[0;32mline presque final : %s\n", line);
 	while (isread == BUFFER_SIZE && is_not_n)
 	{
 		isread = read(fd, buff, BUFFER_SIZE);
 		if (isread < 1)
 			return (NULL);
 		buff[isread] = '\0';
+		printf("\033[0;31mbuff : %s\n", buff);
 		line = newline_cpy(line, buff, &is_not_n);
+		printf("\033[0;32mline : %s\n", line);
 		stash = rest_in_stash(buff, stash);
+		printf("\033[0;35mstash : %s\n", stash);
 	}
+	printf("\033[0;32mline final : %s\n", line);
 	return (line);
 }
