@@ -1,16 +1,22 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dvauthey <marvin@42lausanne.ch>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 10:40:09 by dvauthey          #+#    #+#             */
-/*   Updated: 2024/10/22 17:07:25 by dvauthey         ###   ########.fr       */
+/*   Updated: 2024/10/23 10:27:01 by marvin           ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "get_next_line.h"
+
+/*
+WHAT : read file until next '\n' or the end
+		put it in stash[fd]
+RETURN : stash[fd]
+*/
 
 static char	*read_line(int fd, char *stash)
 {
@@ -40,6 +46,11 @@ static char	*read_line(int fd, char *stash)
 	return (stash);
 }
 
+/*
+WHAT : take the stash[fd] and fill line until '\n' or the end
+RETURN : line
+*/
+
 static char	*stash_in_line(char *stash, char *line)
 {
 	int	i;
@@ -62,6 +73,11 @@ static char	*stash_in_line(char *stash, char *line)
 	return (line);
 }
 
+/*
+WHAT : delete what's in stash[fd] until '\n' or the end
+RETURN : stash[fd]
+*/
+
 static char	*del_stash(char *stash)
 {
 	int	len_n;
@@ -76,25 +92,30 @@ static char	*del_stash(char *stash)
 	return (stash);
 }
 
+/*
+WHAT : read a file and return next line
+RETURN : line
+*/
+
 char	*get_next_line(int fd)
 {
 	char		*line;
-	static char	*stash;
-
+	static char	*(stash[5000]);
 
 	line = NULL;
-	printf("\033[0;33mstash : %s\n", stash);
-	if (stash)
+	printf("\033[0;33mstash[fd] : %s\n", stash[fd]);
+	if (stash[fd])
 	{
-		line = stash_in_line(stash, line);
-		stash = del_stash(stash);
+		line = stash_in_line(stash[fd], line);
+		stash[fd] = del_stash(stash[fd]);
 	}
-	if (!stash)
+	if (!stash[fd])
 	{
-		stash = read_line(fd, stash);
-		printf("\033[0;31mstash : %s\n", stash);
-		line = ft_strjoin(line, stash, 0, ft_strlen_to_n(stash));
-		stash = del_stash(stash);
+		stash[fd] = read_line(fd, stash[fd]);
+		printf("\033[0;31mstash[fd] : %s\n", stash[fd]);
+		line = ft_strjoin(line, stash[fd], 0, ft_strlen_to_n(stash[fd]));
+		printf("\033[0;35mline : %s\n", line);
+		stash[fd] = del_stash(stash[fd]);
 	}
 	return (line);
 }

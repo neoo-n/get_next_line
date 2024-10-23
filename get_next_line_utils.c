@@ -1,34 +1,38 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dvauthey <marvin@42lausanne.ch>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 10:40:48 by dvauthey          #+#    #+#             */
-/*   Updated: 2024/10/22 17:07:22 by dvauthey         ###   ########.fr       */
+/*   Updated: 2024/10/23 11:35:04 by marvin           ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "get_next_line.h"
 
 /* WHAT : malloc and place 0 in each
  * RETURN : new tab malloc				*/
-void	*ft_calloc(size_t count, size_t size)
+char	*ft_calloc(size_t count)
 {
 	int		*tab;
 	size_t			i;
 
 	i = 0;
-	tab = malloc(count * size);
+	printf("count = %d\n", count);
+	tab = malloc(count);
 	if (tab == NULL)
+	{
+		printf("iiiiiiiiiiiiiiiiiiiiiiiiiiiiii\n");
 		return (NULL);
-	while (i < count * size)
+	}
+	while (i < count)
 	{
 		tab[i] = 0;
 		i++;
 	}
-	return ((void *) tab);
+	return ((char *)tab);
 }
 
 // RETURN nb of char in s
@@ -75,7 +79,7 @@ char	*ft_strjoin(char *s1, char *s2, int start, int end)
 	i = 0;
 	j = 0;
 	len_s1 = ft_strlen(s1);
-	result = ft_calloc(len_s1 + end - start, sizeof(char));
+	result = ft_calloc((len_s1 + end - start) * sizeof(char));
 	if (!result)
 		return (NULL);
 	while (i < len_s1) 
@@ -88,6 +92,5 @@ char	*ft_strjoin(char *s1, char *s2, int start, int end)
 		result[i + j] = s2[start + j];
 		j++;
 	}
-	printf("\033[0;34mresult : %i\n", (result[i + j - 1] == '\n'));
 	return (result);
 }
