@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 10:40:48 by dvauthey          #+#    #+#             */
-/*   Updated: 2024/10/23 11:35:04 by marvin           ###   ########.fr       */
+/*   Updated: 2024/10/23 16:46:44 by dvauthey         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -14,25 +14,21 @@
 
 /* WHAT : malloc and place 0 in each
  * RETURN : new tab malloc				*/
-char	*ft_calloc(size_t count)
+void	*ft_calloc(size_t count)
 {
 	int		*tab;
 	size_t			i;
 
 	i = 0;
-	printf("count = %d\n", count);
 	tab = malloc(count);
 	if (tab == NULL)
-	{
-		printf("iiiiiiiiiiiiiiiiiiiiiiiiiiiiii\n");
 		return (NULL);
-	}
 	while (i < count)
 	{
 		tab[i] = 0;
 		i++;
 	}
-	return ((char *)tab);
+	return ((void *)tab);
 }
 
 // RETURN nb of char in s
@@ -65,13 +61,30 @@ int	ft_strlen_to_n(char *s)
 	return (i);
 }
 
+char	*str_cut(char *s, int start, int len)
+{
+	char	*result;
+	int		i;
+
+	i = 0;
+	result = ft_calloc((len + 1) * sizeof(char));
+	if (!result)
+		return (NULL);
+	while (s[start + i])
+	{
+		result[i] = s[start + i];
+		i++;
+	}
+	return (result);
+}
+
 /* WHAT : joining 2 str
  * HOW : 1) create new str (result)
  * 		 2) assign s1, then assign s2 from start to end
  * RETURN : str result									*/
-char	*ft_strjoin(char *s1, char *s2, int start, int end)
+char	*ft_strjoin(char *s1, char *s2, int len)
 {
-	char	*result;
+	char	*res;
 	int		i;
 	int		j;
 	int		len_s1;
@@ -79,18 +92,19 @@ char	*ft_strjoin(char *s1, char *s2, int start, int end)
 	i = 0;
 	j = 0;
 	len_s1 = ft_strlen(s1);
-	result = ft_calloc((len_s1 + end - start) * sizeof(char));
-	if (!result)
+	res = (char *) ft_calloc((len_s1 + len + 1) * sizeof(char));
+	if (!res)
 		return (NULL);
-	while (i < len_s1) 
+	printf("stashh shshsh sshshshshshshshshsh %s\n", s2);
+	while (s1 && s1[i])
 	{
-		result[i] = s1[i];
+		res[i] = s1[i];
 		i++;
 	}
-	while (j < end - start)
+	while (j < len)
 	{
-		result[i + j] = s2[start + j];
+		res[i + j] = s2[j];
 		j++;
 	}
-	return (result);
+	return (res);
 }

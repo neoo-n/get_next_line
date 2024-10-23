@@ -6,7 +6,7 @@
 /*   By: dvauthey <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 10:38:56 by dvauthey          #+#    #+#             */
-/*   Updated: 2024/10/22 16:58:46 by dvauthey         ###   ########.fr       */
+/*   Updated: 2024/10/23 17:35:21 by dvauthey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,10 @@
 # endif
 
 char    *get_next_line(int fd);
+void    *ft_calloc(size_t count);
 int		ft_strlen(char *s);
 int 	ft_strlen_to_n(char *s);
-char    *ft_strjoin(char *s1, char *s2, int start, int end);
+char    *str_cut(char *s, int start, int len);
+char    *ft_strjoin(char *s1, char *s2, int len);
 
 #endif

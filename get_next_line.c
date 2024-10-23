@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 10:40:09 by dvauthey          #+#    #+#             */
-/*   Updated: 2024/10/23 10:27:01 by marvin           ###   ########.fr       */
+/*   Updated: 2024/10/23 16:46:41 by dvauthey         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -34,8 +34,7 @@ static char	*read_line(int fd, char *stash)
 		if (read_size < 1)
 			return (NULL);
 		buff[read_size] = '\0';
-		printf("\033[0;32mbuff : %s\n", buff);
-		stash = ft_strjoin(stash, buff, 0, ft_strlen(buff));
+		stash = ft_strjoin(stash, buff, ft_strlen(buff));
 		while (stash[i])
 		{
 			if (stash[i] == '\n')
@@ -58,18 +57,17 @@ static char	*stash_in_line(char *stash, char *line)
 
 	i = 0;
 	len_stash_tot = ft_strlen(stash);
-	if (!stash)
-		return (NULL);
 	while (stash[i])
 	{
 		if (stash[i] == '\n')
 		{
-			line = ft_strjoin(line, stash, 0, i + 1);
+			line = ft_strjoin(line, stash, i + 1);
+			printf("liii iii iiii iiii iiine : %s\n", line);
 			return (line);
 		}
 		i++;
 	}
-	line = ft_strjoin(line, stash, 0, len_stash_tot);
+	line = ft_strjoin(line, stash, len_stash_tot);
 	return (line);
 }
 
@@ -80,15 +78,26 @@ RETURN : stash[fd]
 
 static char	*del_stash(char *stash)
 {
-	int	len_n;
-	int len_tot;
+	int		i;
 
-	len_n = ft_strlen_to_n(stash);
-	len_tot = ft_strlen(stash);
-	if (len_n != len_tot)
-		stash = ft_strjoin(NULL, stash, len_n, len_tot);
-	else
+	i = 0;
+	if (!stash)
+	{
+		free(stash);
 		return (NULL);
+	}
+	while (stash[i] && stash[i] != '\n')
+		i++;
+	if (stash[i] && stash[i] == '\n')
+	{
+		i++;
+		stash = str_cut(stash, i, ft_strlen(stash) - i);
+	}
+	else
+	{
+		free(stash);
+		return (NULL);
+	}
 	return (stash);
 }
 
@@ -100,22 +109,28 @@ RETURN : line
 char	*get_next_line(int fd)
 {
 	char		*line;
-	static char	*(stash[5000]);
+	static char	*stash;
 
 	line = NULL;
-	printf("\033[0;33mstash[fd] : %s\n", stash[fd]);
-	if (stash[fd])
+	if (stash)
 	{
-		line = stash_in_line(stash[fd], line);
-		stash[fd] = del_stash(stash[fd]);
+		line = stash_in_line(stash, line);
+		stash = del_stash(stash);
 	}
-	if (!stash[fd])
+	printf("\033[0;35mline : %s\n", line);
+	if (!stash)
 	{
-		stash[fd] = read_line(fd, stash[fd]);
-		printf("\033[0;31mstash[fd] : %s\n", stash[fd]);
-		line = ft_strjoin(line, stash[fd], 0, ft_strlen_to_n(stash[fd]));
+		stash = read_line(fd, stash);
+		printf("\033[0;31mstash[%d] : %s\n", fd, stash);
+		if (!stash)
+		{
+			free(stash);
+			return (NULL);
+		}
+		line = stash_in_line(stash, line);
 		printf("\033[0;35mline : %s\n", line);
-		stash[fd] = del_stash(stash[fd]);
+		stash = del_stash(stash);
 	}
+		printf("\033[0;32mstash[%d] : %s\n", fd, stash);
 	return (line);
 }
