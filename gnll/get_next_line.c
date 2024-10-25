@@ -6,7 +6,7 @@
 /*   By: dvauthey <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 16:47:07 by dvauthey          #+#    #+#             */
-/*   Updated: 2024/10/25 14:33:55 by dvauthey         ###   ########.fr       */
+/*   Updated: 2024/10/25 17:49:21 by dvauthey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,10 @@ static char	*read_line(char *stash, int fd, int *iserror)
 	{
 		nb_read = read(fd, buff, BUFFER_SIZE);
 		if (nb_read == 0)
+		{
+			free(stash);
 			return (NULL);
+		}
 		if (nb_read < 0)
 		{
 			*iserror = 1;
@@ -78,15 +81,17 @@ static char	*del_stash(char *stash)
 	len = ft_strlen(stash);
 	while (stash[until_n + 1] && stash[until_n] != '\n')
 		until_n++;
-	until_n++;
-	if (len == until_n)
+	if (len == until_n + 1)
+	{
+		free(stash);
 		return (NULL);
-	temp = ft_calloc((len - until_n + 1), sizeof(char));
+	}
+	temp = ft_calloc((len - until_n + 1 + 1), sizeof(char));
 	if (!temp)
 		return (NULL);
-	while (until_n + i < len)
+	while (until_n + 1 + i < len)
 	{
-		temp[i] = stash[i + until_n];
+		temp[i] = stash[i + until_n + 1];
 		i++;
 	}
 	free(stash);
@@ -128,8 +133,6 @@ char	*get_next_line(int fd)
 			return (err_end(line, stash, iserror));
 		line = cpy_line(line, stash);
 		stash = del_stash(stash);
-		if (!stash)
-			free(stash);
 	}
 	return (line);
 }
