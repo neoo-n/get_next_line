@@ -6,7 +6,7 @@
 /*   By: dvauthey <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 16:47:07 by dvauthey          #+#    #+#             */
-/*   Updated: 2024/10/24 17:27:28 by dvauthey         ###   ########.fr       */
+/*   Updated: 2024/10/25 12:17:02 by dvauthey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,19 +44,18 @@ static char	*cpy_line(char *line, char *stash)
 	int		until_n;
 	char	*temp;
 	int		len_line;
-	int		calloc_err;
 
 	j = 0;
 	until_n = 0;
 	len_line = 0;
-	calloc_err = 0;
 	if (line)
 		len_line = ft_strlen(line);
 	while (stash[until_n + 1] && stash[until_n] != '\n')
 		until_n++;
 	until_n++;
-	temp = ft_calloc((len_line + until_n + 1), sizeof(char), &calloc_err);
-	if (!temp && calloc_err)
+	temp = ft_calloc((len_line + until_n + 1), sizeof(char));
+	printf("calloc line : %i\n", len_line + until_n + 1);
+	if (!temp)
 		return (NULL);
 	while (len_line && line[j])
 	{
@@ -64,6 +63,7 @@ static char	*cpy_line(char *line, char *stash)
 		j++;
 	}
 	temp = temp_stash(stash, temp, j, until_n);
+	free(line);
 	return (temp);
 }	
 
@@ -73,25 +73,24 @@ static char	*del_stash(char *stash)
 	int		until_n;
 	int		len;
 	char	*temp;
-	int		calloc_err;
 
 	i = 0;
 	until_n = 0;
 	len = ft_strlen(stash);
-	calloc_err = 0;
 	while (stash[until_n + 1] && stash[until_n] != '\n')
 		until_n++;
 	until_n++;
 	if (len == until_n)
 		return (NULL);
-	temp = ft_calloc((len - until_n + 1), sizeof(char), &calloc_err);
-	if (!temp && calloc_err)
+	temp = ft_calloc((len - until_n + 1), sizeof(char));
+	if (!temp)
 		return (NULL);
 	while (until_n + i < len)
 	{
 		temp[i] = stash[i + until_n];
 		i++;
 	}
+	free(stash);
 	return (temp);
 }
 

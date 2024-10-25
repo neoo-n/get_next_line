@@ -6,34 +6,28 @@
 /*   By: dvauthey <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 17:02:16 by dvauthey          #+#    #+#             */
-/*   Updated: 2024/10/24 17:15:09 by dvauthey         ###   ########.fr       */
+/*   Updated: 2024/10/25 12:17:04 by dvauthey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-void	*ft_calloc(size_t count, size_t size, int *calloc_err)
+void	*ft_calloc(size_t count, size_t size)
 {
-	char		*tab;
+	char	*tab;
 	size_t	i;
 //	printf("asdf\n");
 
 	i = 0;
 	tab = malloc(count * size);
-	//printf("%zu %zu %lu %lu %p\n", count, size, sizeof(char), sizeof(int), tab);
+	printf("%zu %zu %lu %lu %p\n", count, size, sizeof(char), sizeof(int), tab);
 	if (!tab)
-	{
-		*calloc_err = 1;
 		return (NULL);
-	}
 	while (i < count * size)
 	{
-//		printf("heeeeeeeeelp\n");
 		tab[i] = 0;
-//		printf("tab[i] : %i\n", tab[i]);
 		i++;
 	}
-//	printf("tab[1] = %i, tab[2] = %i\n", tab[0], tab[1]);
 	return ((void *) tab);
 }
 
@@ -81,13 +75,12 @@ char	*ft_strjoin(char *s1, char *s2)
 	char	*res;
 	int		i;
 	int		j;
-	int		calloc_err;
 
 	i = 0;
 	j = 0;
-	calloc_err = 0;
-	res = ft_calloc((ft_strlen(s1) + ft_strlen(s2) + 1), sizeof(char), &calloc_err);
-	if (!res && calloc_err)
+	res = ft_calloc((ft_strlen(s1) + ft_strlen(s2) + 1), sizeof(char));
+	printf("calloc : %i\n", ft_strlen(s1) + ft_strlen(s2) + 1);
+	if (!res)
 		return (NULL);
 	while (s1 && s1[i])
 	{
@@ -100,8 +93,5 @@ char	*ft_strjoin(char *s1, char *s2)
 		j++;
 	}
 	free(s1);
-	res[i + j] = '\0';
-//		printf("res : %s\n", res);
 	return (res);
-
 }

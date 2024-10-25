@@ -22,7 +22,7 @@
 # endif
 
 char	*get_next_line(int fd);
-void	*ft_calloc(size_t count, size_t size, int *calloc_err);
+void	*ft_calloc(size_t count, size_t size);
 int		is_n(char *s);
 char	*temp_stash(char *stash, char *temp, int j, int until_n);
 int		ft_strlen(char *s);
