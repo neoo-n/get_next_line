@@ -6,7 +6,7 @@
 /*   By: dvauthey <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 16:47:07 by dvauthey          #+#    #+#             */
-/*   Updated: 2024/10/25 12:17:02 by dvauthey         ###   ########.fr       */
+/*   Updated: 2024/10/25 14:33:55 by dvauthey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ static char	*cpy_line(char *line, char *stash)
 		until_n++;
 	until_n++;
 	temp = ft_calloc((len_line + until_n + 1), sizeof(char));
-	printf("calloc line : %i\n", len_line + until_n + 1);
 	if (!temp)
 		return (NULL);
 	while (len_line && line[j])
@@ -111,26 +110,26 @@ static char	*err_end(char *line, char *stash, int iserror)
 
 char	*get_next_line(int fd)
 {
-	static char	*stash[3000];
+	static char	*stash;
 	char		*line;
 	int			iserror;
 
 	line = NULL;
 	iserror = 0;
-	if (stash[fd])
+	if (stash)
 	{
-		line = cpy_line(line, stash[fd]);
-		stash[fd] = del_stash(stash[fd]);
+		line = cpy_line(line, stash);
+		stash = del_stash(stash);
 	}
-	if (!stash[fd])
+	if (!stash)
 	{
-		stash[fd] = read_line(stash[fd], fd, &iserror);
-		if (!stash[fd])
-			return (err_end(line, stash[fd], iserror));
-		line = cpy_line(line, stash[fd]);
-		stash[fd] = del_stash(stash[fd]);
-		if (!stash[fd])
-			free(stash[fd]);
+		stash = read_line(stash, fd, &iserror);
+		if (!stash)
+			return (err_end(line, stash, iserror));
+		line = cpy_line(line, stash);
+		stash = del_stash(stash);
+		if (!stash)
+			free(stash);
 	}
 	return (line);
 }

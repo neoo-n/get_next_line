@@ -6,7 +6,7 @@
 /*   By: dvauthey <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 17:02:16 by dvauthey          #+#    #+#             */
-/*   Updated: 2024/10/25 12:17:04 by dvauthey         ###   ########.fr       */
+/*   Updated: 2024/10/25 14:33:53 by dvauthey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,9 @@ void	*ft_calloc(size_t count, size_t size)
 {
 	char	*tab;
 	size_t	i;
-//	printf("asdf\n");
 
 	i = 0;
 	tab = malloc(count * size);
-	printf("%zu %zu %lu %lu %p\n", count, size, sizeof(char), sizeof(int), tab);
 	if (!tab)
 		return (NULL);
 	while (i < count * size)
@@ -79,7 +77,6 @@ char	*ft_strjoin(char *s1, char *s2)
 	i = 0;
 	j = 0;
 	res = ft_calloc((ft_strlen(s1) + ft_strlen(s2) + 1), sizeof(char));
-	printf("calloc : %i\n", ft_strlen(s1) + ft_strlen(s2) + 1);
 	if (!res)
 		return (NULL);
 	while (s1 && s1[i])
