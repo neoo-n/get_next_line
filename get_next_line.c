@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dvauthey <marvin@42lausanne.ch>            +#+  +:+       +#+        */
+/*   By: dvauthey <dvauthey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 16:47:07 by dvauthey          #+#    #+#             */
-/*   Updated: 2024/10/28 11:26:11 by dvauthey         ###   ########.fr       */
+/*   Updated: 2024/12/18 11:16:38 by dvauthey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,8 @@ char	*get_next_line(int fd)
 	char		*line;
 	int			iserror;
 
+	if (BUFFER_SIZE <= 0)
+		return (NULL);
 	line = NULL;
 	iserror = 0;
 	if (stash)
